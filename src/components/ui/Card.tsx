@@ -33,6 +33,9 @@ const cardStyles = css`
     box-shadow: ${theme.boxShadow.md};
     transform: translateY(-2px);
   }
+  @media (max-width: 480px) {
+    border-radius: ${theme.borderRadius.sm};
+  }
 `;
 
 const cardHeaderStyles = css`

@@ -2,7 +2,7 @@ import React from "react";
 import { css } from "@emotion/react";
 import theme from "../../styles/theme";
 import Button from "../ui/Button";
-import { Song } from "../../types/songTypes";
+import type { Song } from "../../types/songTypes";
 
 interface SongItemProps {
   song: Song;
@@ -41,6 +41,10 @@ const songItemStyles = css`
   padding: ${theme.spacing.md};
   border-bottom: 1px solid ${theme.colors.border};
   transition: background-color 0.2s;
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
   &:hover {
     background-color: ${theme.colors.light};
@@ -79,6 +83,11 @@ const songGenreStyles = css`
 const songActionsStyles = css`
   display: flex;
   gap: ${theme.spacing.sm};
+  @media (max-width: 480px) {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: ${theme.spacing.sm};
+  }
 `;
 
 export default SongItem;

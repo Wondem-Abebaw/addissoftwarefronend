@@ -1,22 +1,22 @@
 import apiClient from "./apiClient";
 
 export const getSongs = async () => {
-  const response = await apiClient.get("/songs");
+  const response = await apiClient.get("/songs/get-songs");
   return response.data;
 };
 
 export const createSong = async (songData: any) => {
-  const response = await apiClient.post("/songs", songData);
+  const response = await apiClient.post("/songs/create-song", songData);
   return response.data;
 };
 
 export const updateSong = async (id: string, songData: any) => {
-  const response = await apiClient.put(`/songs/${id}`, songData);
+  const response = await apiClient.put(`/songs/update-song/${id}`, songData);
   return response.data;
 };
 
 export const deleteSong = async (id: string) => {
-  const response = await apiClient.delete(`/songs/${id}`);
+  const response = await apiClient.delete(`/songs/delete-song/${id}`);
   return response.data;
 };
 

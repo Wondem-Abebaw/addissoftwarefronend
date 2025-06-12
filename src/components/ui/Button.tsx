@@ -100,6 +100,10 @@ const Button: React.FC<ButtonProps> = ({
 
     ${variantStyles[variant]}
     ${sizeStyles[size]}
+      @media (max-width: 480px) {
+      padding: ${theme.spacing.xs} ${theme.spacing.sm};
+      font-size: ${theme.fontSizes.sm};
+    }
   `;
 
   return (

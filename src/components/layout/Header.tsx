@@ -6,7 +6,11 @@ import Button from "../ui/Button";
 import { useNotification } from "../../hooks/useNotification";
 import { Notification } from "../../hooks/useNotification";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  toggleSidebar: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   const location = useLocation();
   const { showNotification } = useNotification();
 
@@ -16,6 +20,14 @@ const Header: React.FC = () => {
     <header css={headerStyles}>
       <div css={containerStyles}>
         <div css={logoStyles}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={toggleSidebar}
+            css={menuButtonStyles}
+          >
+            ☰
+          </Button>
           <Link to="/">Music Library</Link>
         </div>
         <nav css={navStyles}>
@@ -43,6 +55,7 @@ const Header: React.FC = () => {
             onClick={() =>
               showNotification("API Key functionality added!", "info")
             }
+            css={apiButtonStyles}
           >
             API Key
           </Button>
@@ -67,13 +80,15 @@ const containerStyles = css`
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
 `;
 
 const logoStyles = css`
-  font-size: ${theme.fontSizes.xl};
+  font-size: ${theme.fontSizes.lg};
   font-weight: 700;
   color: ${theme.colors.primary};
+  display: flex;
+  align-items: center;
 
   a {
     text-decoration: none;
@@ -83,8 +98,12 @@ const logoStyles = css`
 
 const navStyles = css`
   display: flex;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.sm};
   align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const navLinkStyles = css`
@@ -94,6 +113,7 @@ const navLinkStyles = css`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.sm};
   transition: all 0.2s;
+  font-size: ${theme.fontSizes.sm};
 
   &:hover {
     color: ${theme.colors.primary};
@@ -104,6 +124,21 @@ const navLinkStyles = css`
 const activeNavLinkStyles = css`
   color: ${theme.colors.primary};
   background-color: rgba(67, 97, 238, 0.1);
+`;
+
+const menuButtonStyles = css`
+  margin-right: ${theme.spacing.sm};
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+const apiButtonStyles = css`
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 export default Header;

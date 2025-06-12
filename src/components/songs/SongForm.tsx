@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
 import theme from "../../styles/theme";
 import Button from "../ui/Button";
-import { SongFormData } from "../../types/songTypes";
+import type { SongFormData } from "../../types/songTypes";
+// import { SongFormData } from "../../types/songTypes";
 
 interface SongFormProps {
   onSubmit: (songData: SongFormData) => void;

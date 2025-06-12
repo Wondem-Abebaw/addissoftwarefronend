@@ -97,6 +97,9 @@ const filterContainerStyles = css`
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: ${theme.spacing.md};
   align-items: flex-end;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const filterGroupStyles = css`
@@ -122,6 +125,9 @@ const filterActionsStyles = css`
   display: flex;
   gap: ${theme.spacing.sm};
   align-self: flex-end;
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
 export default SongFilter;

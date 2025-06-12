@@ -2,7 +2,8 @@ import React from "react";
 import { css } from "@emotion/react";
 import theme from "../../styles/theme";
 import Card from "../ui/Card";
-import { Statistics } from "../../types/statsTypes";
+import type { Statistics } from "../../types/statsTypes";
+// import { Statistics } from "../../types/statsTypes";
 
 interface GenreStatsProps {
   stats: Statistics;
@@ -11,25 +12,30 @@ interface GenreStatsProps {
 const GenreStats: React.FC<GenreStatsProps> = ({ stats }) => {
   return (
     <Card title="Songs by Genre">
-      <div css={tableStyles}>
-        <div css={tableHeaderStyles}>
-          <div css={tableCellStyles}>Genre</div>
-          <div css={[tableCellStyles, { textAlign: "right" }]}>Songs</div>
-        </div>
-
-        {stats.songsPerGenre.map((genre) => (
-          <div key={genre._id} css={tableRowStyles}>
-            <div css={tableCellStyles}>{genre._id}</div>
-            <div css={[tableCellStyles, { textAlign: "right" }]}>
-              {genre.count}
-            </div>
+      <div css={tableContainerStyles}>
+        <div css={tableStyles}>
+          <div css={tableHeaderStyles}>
+            <div css={tableCellStyles}>Genre</div>
+            <div css={[tableCellStyles, { textAlign: "right" }]}>Songs</div>
           </div>
-        ))}
+
+          {stats.songsPerGenre.map((genre) => (
+            <div key={genre._id} css={tableRowStyles}>
+              <div css={tableCellStyles}>{genre._id}</div>
+              <div css={[tableCellStyles, { textAlign: "right" }]}>
+                {genre.count}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </Card>
   );
 };
-
+const tableContainerStyles = css`
+  overflow-x: auto;
+  width: 100%;
+`;
 const tableStyles = css`
   width: 100%;
 `;

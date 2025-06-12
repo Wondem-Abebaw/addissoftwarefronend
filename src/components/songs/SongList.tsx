@@ -8,15 +8,14 @@ import Modal from "../ui/Modal";
 import SongForm from "./SongForm";
 import Loader from "../ui/Loader";
 import SongFilter from "./SongFilter";
-import {
-  addSong,
-  updateSong,
-  deleteSong,
-} from "../../features/songs/songSlice";
+import { addSong } from "../../features/songs/songSlice";
+import type { Song } from "../../types/songTypes";
+import { createSong, deleteSong, updateSong } from "../../api/songAPI";
 
 const SongList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { songs, loading, error } = useAppSelector((state) => state.songs);
+  console.log("Songs:", songs);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -33,15 +32,17 @@ const SongList: React.FC = () => {
 
   const handleDeleteSong = (id: string) => {
     if (window.confirm("Are you sure you want to delete this song?")) {
-      dispatch(deleteSong(id));
+      deleteSong(id);
+      // dispatch(deleteSong(id));
     }
   };
 
   const handleSubmit = (songData: any) => {
     if (currentSong) {
-      dispatch(updateSong(currentSong._id, songData));
+      updateSong(currentSong._id, songData);
+      // dispatch(updateSong(currentSong._id, songData));
     } else {
-      dispatch(addSong(songData));
+      createSong(songData);
     }
     setIsModalOpen(false);
   };
@@ -68,7 +69,7 @@ const SongList: React.FC = () => {
 
       {showFilters && <SongFilter />}
 
-      {songs.length === 0 ? (
+      {songs?.data?.length === 0 ? (
         <div css={emptyStateStyles}>
           <p>No songs found. Add your first song!</p>
           <Button variant="success" onClick={handleAddSong}>
@@ -77,14 +78,15 @@ const SongList: React.FC = () => {
         </div>
       ) : (
         <div css={listStyles}>
-          {songs.map((song) => (
-            <SongItem
-              key={song._id}
-              song={song}
-              onEdit={handleEditSong}
-              onDelete={handleDeleteSong}
-            />
-          ))}
+          {songs &&
+            songs?.data?.map((song) => (
+              <SongItem
+                key={song._id}
+                song={song}
+                onEdit={handleEditSong}
+                onDelete={handleDeleteSong}
+              />
+            ))}
         </div>
       )}
 
@@ -106,14 +108,29 @@ const SongList: React.FC = () => {
 
 const headerStyles = css`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.lg};
+
+  @media (min-width: 480px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const buttonGroupStyles = css`
   display: flex;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.sm};
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    width: 100%;
+
+    button {
+      flex: 1;
+    }
+  }
 `;
 
 const listStyles = css`
@@ -129,6 +146,9 @@ const emptyStateStyles = css`
   background: white;
   border-radius: ${theme.borderRadius.md};
   box-shadow: ${theme.boxShadow.sm};
+  @media (max-width: 480px) {
+    padding: ${theme.spacing.lg} 0;
+  }
 
   p {
     margin-bottom: ${theme.spacing.md};

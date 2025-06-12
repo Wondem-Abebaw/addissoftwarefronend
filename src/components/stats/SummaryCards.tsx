@@ -2,7 +2,8 @@ import React from "react";
 import { css } from "@emotion/react";
 import theme from "../../styles/theme";
 import Card from "../ui/Card";
-import { Statistics } from "../../types/statsTypes";
+import type { Statistics } from "../../types/statsTypes";
+// import { Statistics } from "../../types/statsTypes";
 
 interface SummaryCardsProps {
   stats: Statistics;
@@ -47,6 +48,13 @@ const gridStyles = css`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.lg};
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const cardContentStyles = css`

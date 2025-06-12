@@ -2,7 +2,8 @@ import React from "react";
 import { css } from "@emotion/react";
 import theme from "../../styles/theme";
 import Card from "../ui/Card";
-import { Statistics } from "../../types/statsTypes";
+import type { Statistics } from "../../types/statsTypes";
+// import type { Statistics } from "../../types/statsTypes";
 
 interface AlbumStatsProps {
   stats: Statistics;
@@ -11,20 +12,22 @@ interface AlbumStatsProps {
 const AlbumStats: React.FC<AlbumStatsProps> = ({ stats }) => {
   return (
     <Card title="Albums">
-      <div css={tableStyles}>
-        <div css={tableHeaderStyles}>
-          <div css={tableCellStyles}>Album</div>
-          <div css={tableCellStyles}>Artist</div>
-          <div css={tableCellStyles}>Songs</div>
-        </div>
-
-        {stats.songsPerAlbum.map((album, index) => (
-          <div key={index} css={tableRowStyles}>
-            <div css={tableCellStyles}>{album.album}</div>
-            <div css={tableCellStyles}>{album.artist}</div>
-            <div css={tableCellStyles}>{album.songs}</div>
+      <div css={tableContainerStyles}>
+        <div css={tableStyles}>
+          <div css={tableHeaderStyles}>
+            <div css={tableCellStyles}>Album</div>
+            <div css={tableCellStyles}>Artist</div>
+            <div css={tableCellStyles}>Songs</div>
           </div>
-        ))}
+
+          {stats.songsPerAlbum.map((album, index) => (
+            <div key={index} css={tableRowStyles}>
+              <div css={tableCellStyles}>{album.album}</div>
+              <div css={tableCellStyles}>{album.artist}</div>
+              <div css={tableCellStyles}>{album.songs}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </Card>
   );
@@ -60,6 +63,10 @@ const tableRowStyles = css`
 
 const tableCellStyles = css`
   padding: ${theme.spacing.xs} 0;
+`;
+const tableContainerStyles = css`
+  overflow-x: auto;
+  width: 100%;
 `;
 
 export default AlbumStats;

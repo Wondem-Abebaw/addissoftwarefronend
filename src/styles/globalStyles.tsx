@@ -99,6 +99,29 @@ const GlobalStyles = () => (
           transform: translateY(-20px);
         }
       }
+
+      /* Mobile-specific styles */
+      @media (max-width: 768px) {
+        html {
+          font-size: 14px;
+        }
+
+        .page-title {
+          font-size: ${theme.fontSizes.xl};
+        }
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: ${theme.spacing.md};
+        }
+
+        button,
+        .button {
+          padding: 8px 12px;
+          font-size: ${theme.fontSizes.sm};
+        }
+      }
     `}
   />
 );
