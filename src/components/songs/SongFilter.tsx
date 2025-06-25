@@ -8,6 +8,7 @@ import {
   clearFilter,
   applyFilter,
 } from "../../features/songs/songSlice";
+import { filterSongs } from "../../api/songAPI";
 
 const SongFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -17,16 +18,19 @@ const SongFilter: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    dispatch(setFilter({ field: name, value }));
+    if (value !== "" || value !== undefined) {
+      dispatch(setFilter({ field: name, value }));
+    }
   };
 
   const handleApplyFilter = () => {
-    dispatch(applyFilter(filter));
+    filterSongs(filter);
+    // dispatch(applyFilter(filter));
   };
 
   const handleClearFilter = () => {
     dispatch(clearFilter());
-    dispatch(applyFilter({ genre: "", artist: "", album: "" }));
+    dispatch(applyFilter({}));
   };
 
   return (

@@ -21,6 +21,6 @@ export const deleteSong = async (id: string) => {
 };
 
 export const filterSongs = async (filters: any) => {
-  const response = await apiClient.get("/songs", { params: filters });
+  const response = await apiClient.get("/songs/get-songs", { params: filters });
   return response.data;
 };

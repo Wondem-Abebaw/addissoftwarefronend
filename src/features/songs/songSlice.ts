@@ -7,11 +7,7 @@ const initialState: SongState = {
   songs: [],
   loading: false,
   error: null,
-  filter: {
-    genre: "",
-    artist: "",
-    album: "",
-  },
+  filter: {},
 };
 
 const songSlice = createSlice({

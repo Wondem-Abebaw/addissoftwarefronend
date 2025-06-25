@@ -20,8 +20,8 @@ export interface SongState {
   loading: boolean;
   error: string | null;
   filter: {
-    genre: string;
-    artist: string;
-    album: string;
+    genre?: string;
+    artist?: string;
+    album?: string;
   };
 }
