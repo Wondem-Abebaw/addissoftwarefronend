@@ -24,8 +24,7 @@ const SongFilter: React.FC = () => {
   };
 
   const handleApplyFilter = () => {
-    filterSongs(filter);
-    // dispatch(applyFilter(filter));
+    dispatch(applyFilter(filter));
   };
 
   const handleClearFilter = () => {

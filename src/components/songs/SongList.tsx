@@ -8,9 +8,14 @@ import Modal from "../ui/Modal";
 import SongForm from "./SongForm";
 import Loader from "../ui/Loader";
 import SongFilter from "./SongFilter";
-import { addSong } from "../../features/songs/songSlice";
+import {
+  addSong,
+  deleteSong,
+  updateSong,
+} from "../../features/songs/songSlice";
 import type { Song } from "../../types/songTypes";
-import { createSong, deleteSong, updateSong } from "../../api/songAPI";
+// import { createSong, deleteSong, updateSong } from "../../api/songAPI";
+import SongItemSkeleton from "./song-skeloton";
 
 const SongList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -30,24 +35,28 @@ const SongList: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  // const handleDeleteSong = (id: string) => {
+  //   if (window.confirm("Are you sure you want to delete this song?")) {
+  //     deleteSong(id);
+  //     // dispatch(deleteSong(id));
+  //   }
+  // };
   const handleDeleteSong = (id: string) => {
     if (window.confirm("Are you sure you want to delete this song?")) {
-      deleteSong(id);
-      // dispatch(deleteSong(id));
+      dispatch(deleteSong(id)); // This will trigger the saga and update state
     }
   };
 
   const handleSubmit = (songData: any) => {
     if (currentSong) {
-      updateSong(currentSong._id, songData);
-      // dispatch(updateSong(currentSong._id, songData));
+      console.log("currentSong", currentSong);
+      dispatch(updateSong(currentSong._id, songData));
     } else {
-      createSong(songData);
+      dispatch(addSong(songData));
     }
     setIsModalOpen(false);
   };
 
-  if (loading) return <Loader />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -68,27 +77,34 @@ const SongList: React.FC = () => {
       </div>
 
       {showFilters && <SongFilter />}
-
-      {songs?.data?.length === 0 ? (
-        <div css={emptyStateStyles}>
-          <p>No songs found. Add your first song!</p>
-          <Button variant="success" onClick={handleAddSong}>
-            Add Song
-          </Button>
-        </div>
-      ) : (
-        <div css={listStyles}>
-          {songs &&
-            songs?.data?.map((song) => (
-              <SongItem
-                key={song._id}
-                song={song}
-                onEdit={handleEditSong}
-                onDelete={handleDeleteSong}
-              />
+      <>
+        {loading ? (
+          <div css={listStyles}>
+            {[...Array(3)].map((_, index) => (
+              <SongItemSkeleton key={index} />
             ))}
-        </div>
-      )}
+          </div>
+        ) : songs?.length === 0 ? (
+          <div css={emptyStateStyles}>
+            <p>No songs found. Add your first song!</p>
+            <Button variant="success" onClick={handleAddSong}>
+              Add Song
+            </Button>
+          </div>
+        ) : (
+          <div css={listStyles}>
+            {songs &&
+              songs?.map((song) => (
+                <SongItem
+                  key={song._id}
+                  song={song}
+                  onEdit={handleEditSong}
+                  onDelete={handleDeleteSong}
+                />
+              ))}
+          </div>
+        )}
+      </>
 
       <Modal
         isOpen={isModalOpen}

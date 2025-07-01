@@ -27,9 +27,10 @@ const songSlice = createSlice({
       state.error = action.payload;
     },
     addSongSuccess(state, action: PayloadAction<Song>) {
-      state.songs.push(action.payload);
+      state.songs.unshift(action.payload);
     },
     updateSongSuccess(state, action: PayloadAction<Song>) {
+   
       const index = state.songs.findIndex(
         (song) => song._id === action.payload._id
       );
@@ -45,7 +46,7 @@ const songSlice = createSlice({
       state.filter = { ...state.filter, [field]: value };
     },
     clearFilter(state) {
-      state.filter = { genre: "", artist: "", album: "" };
+      state.filter = {};
     },
   },
 });

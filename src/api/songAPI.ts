@@ -7,12 +7,14 @@ export const getSongs = async () => {
 
 export const createSong = async (songData: any) => {
   const response = await apiClient.post("/songs/create-song", songData);
+  console.log("Created song:", response.data);
   return response.data;
 };
 
 export const updateSong = async (id: string, songData: any) => {
   const response = await apiClient.put(`/songs/update-song/${id}`, songData);
-  return response.data;
+  console.log("🚀 ~ updateSong ~ response:", response.data.data);
+  return response.data.data;
 };
 
 export const deleteSong = async (id: string) => {
