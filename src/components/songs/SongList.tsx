@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
 import theme from "../../styles/theme";
 import { useAppDispatch, useAppSelector } from "../../store/store";
@@ -24,6 +24,9 @@ const SongList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [songToDelete, setSongToDelete] = useState<Song | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleAddSong = () => {
     setCurrentSong(null);
@@ -35,16 +38,31 @@ const SongList: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  // const handleDeleteSong = (id: string) => {
-  //   if (window.confirm("Are you sure you want to delete this song?")) {
-  //     deleteSong(id);
-  //     // dispatch(deleteSong(id));
-  //   }
-  // };
   const handleDeleteSong = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this song?")) {
-      dispatch(deleteSong(id)); // This will trigger the saga and update state
+    const song = songs.find((s: Song) => s._id === id);
+    setSongToDelete(song || null);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (songToDelete) {
+      setIsDeleting(true);
+      dispatch(deleteSong(songToDelete._id));
     }
+  };
+
+  // Watch for loading to become false after deleting
+  useEffect(() => {
+    if (isDeleting && !loading && isDeleteModalOpen) {
+      setIsDeleteModalOpen(false);
+      setSongToDelete(null);
+      setIsDeleting(false);
+    }
+  }, [loading, isDeleting, isDeleteModalOpen]);
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false);
+    setSongToDelete(null);
   };
 
   const handleSubmit = (songData: any) => {
@@ -117,6 +135,40 @@ const SongList: React.FC = () => {
           isSubmitting={loading}
           onCancel={() => setIsModalOpen(false)}
         />
+      </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCancelDelete}
+        title="Delete Song"
+      >
+        <div style={{ textAlign: "center" }}>
+          <p>
+            Are you sure you want to delete <b>{songToDelete?.title}</b>?
+          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 16,
+              marginTop: 24,
+            }}
+          >
+            <Button
+              variant="danger"
+              onClick={handleConfirmDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleCancelDelete}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   );
