@@ -39,7 +39,7 @@ const SongFilter: React.FC = () => {
         <select
           id="genre"
           name="genre"
-          value={filter.genre}
+          value={filter.genre || ""}
           onChange={handleFilterChange}
         >
           <option value="">All Genres</option>
@@ -60,7 +60,7 @@ const SongFilter: React.FC = () => {
           type="text"
           id="artist"
           name="artist"
-          value={filter.artist}
+          value={filter.artist || ""}
           onChange={handleFilterChange}
           placeholder="Filter by artist"
         />
@@ -72,7 +72,7 @@ const SongFilter: React.FC = () => {
           type="text"
           id="album"
           name="album"
-          value={filter.album}
+          value={filter.album || ""}
           onChange={handleFilterChange}
           placeholder="Filter by album"
         />

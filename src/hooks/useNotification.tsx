@@ -1,47 +1,60 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 type NotificationType = "success" | "error" | "info" | "warning";
 
 interface Notification {
+  id: string;
   message: string;
   type: NotificationType;
-  visible: boolean;
+  duration?: number;
 }
 
 export const useNotification = () => {
-  const [notification, setNotification] = useState<Notification>({
-    message: "",
-    type: "info",
-    visible: false,
-  });
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [currentNotification, setCurrentNotification] =
+    useState<Notification | null>(null);
 
   const showNotification = useCallback(
-    (message: string, type: NotificationType = "info") => {
-      setNotification({ message, type, visible: true });
-      setTimeout(() => {
-        setNotification((prev) => ({ ...prev, visible: false }));
-      }, 3000);
+    (message: string, type: NotificationType = "info", duration = 3000) => {
+      const id = Math.random().toString(36).substring(2, 9);
+      const newNotification = { id, message, type, duration };
+
+      setNotifications((prev) => [...prev, newNotification]);
     },
     []
   );
 
+  useEffect(() => {
+    if (notifications.length > 0 && !currentNotification) {
+      // Set the current notification to the first in queue
+      setCurrentNotification(notifications[0]);
+      // Remove it from queue after duration
+      const timer = setTimeout(() => {
+        setCurrentNotification(null);
+        setNotifications((prev) => prev.slice(1));
+      }, notifications[0].duration);
+
+      return () => clearTimeout(timer);
+    }
+  }, [notifications, currentNotification]);
+
   return {
-    notification,
+    currentNotification,
     showNotification,
   };
 };
 
 export const Notification = () => {
-  const { notification } = useNotification();
+  const { currentNotification } = useNotification();
 
-  if (!notification.visible) return null;
+  if (!currentNotification) return null;
 
   const bgColor = {
     success: "#4caf50",
     error: "#f44336",
     info: "#2196f3",
     warning: "#ff9800",
-  }[notification.type];
+  }[currentNotification.type];
 
   return (
     <div
@@ -55,10 +68,10 @@ export const Notification = () => {
         borderRadius: "4px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
         zIndex: 1000,
-        animation: "fadeIn 0.3s, fadeOut 0.3s 2.7s",
+        animation: "fadeIn 0.3s",
       }}
     >
-      {notification.message}
+      {currentNotification.message}
     </div>
   );
 };

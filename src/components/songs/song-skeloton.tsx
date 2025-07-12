@@ -1,124 +1,128 @@
+/** SkeletonCard.tsx */
 import React from "react";
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import theme from "../../styles/theme";
+
+const shimmer = keyframes`
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+`;
+
+const skeletonStyle = css`
+  background: linear-gradient(90deg, #f3f3f3 25%, #ecebeb 37%, #f3f3f3 63%);
+  background-size: 400% 100%;
+  animation: ${shimmer} 1.2s ease-in-out infinite;
+  border-radius: 6px;
+`;
 
 const SongItemSkeleton: React.FC = () => {
   return (
-    <div css={skeletonItemStyles}>
-      <div css={skeletonInfoStyles}>
-        <div css={skeletonTitleStyles} />
-        <div css={skeletonMetaStyles}>
-          <span css={skeletonTextStyles} />
-          <span css={skeletonDividerStyles} />
-          <span css={skeletonTextStyles} />
+    <div css={skeletonCardStyles}>
+      <div css={headerRowStyles}>
+        <div css={iconAndTitleStyles}>
+          <div css={[musicIconStyles, skeletonStyle]} />
+          <div css={titleArtistStyles}>
+            <div css={[skeletonStyle, titleSkeleton]} />
+            <div css={[skeletonStyle, artistSkeleton]} />
+          </div>
         </div>
-        <div css={skeletonGenreStyles} />
+        <div css={[menuIconSkeleton, skeletonStyle]} />
       </div>
-      <div css={skeletonActionsStyles}>
-        <div css={skeletonButtonStyles} />
-        <div css={skeletonButtonStyles} />
+      <div css={cardContentStyles}>
+        <div>
+          <div css={[skeletonStyle, labelSkeleton]} />
+          <div css={[skeletonStyle, valueSkeleton]} />
+        </div>
+        <div>
+          <div css={[skeletonStyle, labelSkeleton]} />
+          <div css={[skeletonStyle, pillSkeleton]} />
+        </div>
       </div>
     </div>
   );
 };
 
-// Skeleton Styles
-const skeletonBase = css`
-  background: ${theme.colors.border};
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.6),
-      transparent
-    );
-    animation: shimmer 1.5s infinite;
-  }
-
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-`;
-
-const skeletonItemStyles = css`
+const skeletonCardStyles = css`
+  background: white;
+  border-radius: ${theme.borderRadius.md};
+  box-shadow: ${theme.boxShadow.sm};
+  min-height: 220px;
+  padding: 28px 24px 24px 24px;
+  margin-bottom: ${theme.spacing.lg};
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+`;
+
+const headerRowStyles = css`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+`;
+
+const iconAndTitleStyles = css`
+  display: flex;
   align-items: center;
-  padding: ${theme.spacing.md};
-  border-bottom: 1px solid ${theme.colors.border};
-
-  @media (max-width: 480px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  gap: 16px;
 `;
 
-const skeletonInfoStyles = css`
-  flex: 1;
-  width: 100%;
+const musicIconStyles = css`
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
 `;
 
-const skeletonTitleStyles = css`
-  ${skeletonBase};
-  height: 24px;
-  width: 60%;
-  margin-bottom: ${theme.spacing.xs};
-`;
-
-const skeletonMetaStyles = css`
+const titleArtistStyles = css`
   display: flex;
-  gap: ${theme.spacing.sm};
-  margin-bottom: ${theme.spacing.xs};
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
 `;
 
-const skeletonTextStyles = css`
-  ${skeletonBase};
+const titleSkeleton = css`
+  width: 100px;
   height: 16px;
-  width: 80px;
 `;
 
-const skeletonDividerStyles = css`
-  width: 5px;
-`;
-
-const skeletonGenreStyles = css`
-  ${skeletonBase};
-  height: 20px;
+const artistSkeleton = css`
   width: 60px;
-  border-radius: 12px;
+  height: 14px;
 `;
 
-const skeletonActionsStyles = css`
+const menuIconSkeleton = css`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+`;
+
+const cardContentStyles = css`
   display: flex;
-  gap: ${theme.spacing.sm};
-
-  @media (max-width: 480px) {
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: ${theme.spacing.sm};
-  }
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 32px;
+  margin-top: 8px;
 `;
 
-const skeletonButtonStyles = css`
-  ${skeletonBase};
-  height: 32px;
+const labelSkeleton = css`
+  width: 40px;
+  height: 12px;
+  margin-bottom: 4px;
+`;
+
+const valueSkeleton = css`
+  width: 80px;
+  height: 14px;
+`;
+
+const pillSkeleton = css`
   width: 60px;
-  border-radius: ${theme.borderRadius.sm};
+  height: 20px;
+  border-radius: 9999px;
 `;
 
 export default SongItemSkeleton;

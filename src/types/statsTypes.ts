@@ -1,3 +1,4 @@
+// statsType.ts
 export interface Statistics {
   totalSongs: number;
   totalArtists: number;

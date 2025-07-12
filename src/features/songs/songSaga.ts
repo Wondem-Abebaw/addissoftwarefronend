@@ -14,9 +14,7 @@ import {
   updateSongSuccess,
   deleteSongSuccess,
 } from "./songSlice";
-// import { Song } from "../../types/songTypes";
-import { useNotification } from "../../hooks/useNotification";
-// import { RootState } from "../../store/store";
+import { toast } from "sonner";
 
 function* handleFetchSongs(): Generator<any, void, any> {
   try {
@@ -35,10 +33,9 @@ function* handleAddSong(action: any): Generator<any, void, any> {
     const newSong = yield call(createSong, action.payload);
     // console.log("newSong", newSong);
     yield put(addSongSuccess(newSong.data));
-    // showNotification("Song added successfully!", "success");
-  } catch (error) {
-    // const { showNotification } = useNotification();
-    // showNotification(`Error adding song: ${error.message}`, "error");
+    toast.success("Song added successfully!");
+  } catch (error: any) {
+    toast.error(`Error adding song: ${error.message}`);
   }
 }
 
@@ -55,11 +52,9 @@ function* handleUpdateSong(action: any): Generator<any, void, any> {
     console.log("updatedSong", updatedSong);
     // console.log("normalizedSong", normalizedData);
     yield put(updateSongSuccess(updatedSong));
-    // yield put(updateSongSuccess(updatedSong));
-    // showNotification("Song updated successfully!", "success");
-  } catch (error) {
-    // const { showNotification } = useNotification();
-    // showNotification(`Error updating song: ${error.message}`, "error");
+    toast.success("Song updated successfully!");
+  } catch (error: any) {
+    toast.error(`Error updating song: ${error.message}`);
   }
 }
 
@@ -68,15 +63,14 @@ function* handleDeleteSong(action: any): Generator<any, void, any> {
     // const { showNotification } = useNotification();
     yield call(deleteSong, action.payload);
     yield put(deleteSongSuccess(action.payload));
-    // showNotification("Song deleted successfully!", "success");
-  } catch (error) {
-    // const { showNotification } = useNotification();
-    // showNotification(`Error deleting song: ${error.message}`, "error");
+    toast.success("Song deleted successfully!");
+  } catch (error: any) {
+    toast.error(`Error deleting song: ${error.message}`);
   }
 }
 
 function* handleApplyFilter(action: any): Generator<any, void, any> {
-  console.log("Applying filter with action:", action.payload);
+  // console.log("Applying filter with action:", action.payload);
   try {
     yield put(fetchSongsStart());
     const filters = action.payload;

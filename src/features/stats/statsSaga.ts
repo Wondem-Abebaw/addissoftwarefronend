@@ -1,5 +1,11 @@
-import { call, put, takeEvery } from "redux-saga/effects";
-import { getStatistics } from "../../api/statsAPI";
+// statsSaga.ts
+import { all, call, put, takeEvery } from "redux-saga/effects";
+import {
+  getTotalCounts,
+  getSongsPerGenre,
+  getArtistStats,
+  getAlbumStats,
+} from "../../api/statsAPI";
 import {
   fetchStatsStart,
   fetchStatsSuccess,
@@ -9,9 +15,23 @@ import {
 function* handleFetchStatistics(): Generator<any, void, any> {
   try {
     yield put(fetchStatsStart());
-    const stats = yield call(getStatistics);
-    yield put(fetchStatsSuccess(stats));
-  } catch (error) {
+
+    const [totalCounts, songsPerGenre, artistStats, albumStats] = yield all([
+      call(getTotalCounts),
+      call(getSongsPerGenre),
+      call(getArtistStats),
+      call(getAlbumStats),
+    ]);
+
+    const combinedStats = {
+      ...totalCounts,
+      songsPerGenre,
+      songsAndAlbumsPerArtist: artistStats,
+      songsPerAlbum: albumStats,
+    };
+
+    yield put(fetchStatsSuccess(combinedStats));
+  } catch (error: any) {
     yield put(fetchStatsFailure(error.message));
   }
 }

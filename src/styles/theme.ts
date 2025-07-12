@@ -1,8 +1,11 @@
 const theme = {
   colors: {
     primary: "#4361ee",
+    primaryDark: "#7C3AED",
     secondary: "#3f37c9",
+    secondaryDark: "#2563EB",
     success: "#4cc9f0",
+    successDark: "#059669",
     danger: "#f72585",
     warning: "#ffb703",
     info: "#4895ef",
@@ -12,6 +15,14 @@ const theme = {
     text: "#333333",
     textLight: "#6c757d",
     border: "#dee2e6",
+    dangerDark: "#DC2626",
+    // Newly added colors
+    card: "#ffffff",
+    cardForeground: "#111827",
+    mutedForeground: "#6b7280",
+    skeletonBg: "#e2e8f0",
+    skeletonHighlight: "#f1f5f9",
+    skeletonCardBg: "#f8fafc",
   },
   spacing: {
     xs: "4px",
@@ -20,6 +31,8 @@ const theme = {
     lg: "24px",
     xl: "32px",
     xxl: "48px",
+    "1.5": "6px",
+    "6": "24px",
   },
   borderRadius: {
     sm: "4px",
@@ -37,6 +50,17 @@ const theme = {
     lg: "18px",
     xl: "24px",
     xxl: "32px",
+
+    "2xl": "36px",
+  },
+  fontWeights: {
+    semibold: 600,
+  },
+  lineHeight: {
+    none: "1",
+  },
+  letterSpacing: {
+    tight: "-0.015em",
   },
 };
 

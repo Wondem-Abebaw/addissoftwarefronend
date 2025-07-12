@@ -19,8 +19,9 @@ import SongItemSkeleton from "./song-skeloton";
 
 const SongList: React.FC = () => {
   const dispatch = useAppDispatch();
+
   const { songs, loading, error } = useAppSelector((state) => state.songs);
-  console.log("Songs:", songs);
+  // console.log("Songs:", songs);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [showFilters, setShowFilters] = useState(false);
@@ -67,7 +68,7 @@ const SongList: React.FC = () => {
 
   const handleSubmit = (songData: any) => {
     if (currentSong) {
-      console.log("currentSong", currentSong);
+      // console.log("currentSong", currentSong);
       dispatch(updateSong(currentSong._id, songData));
     } else {
       dispatch(addSong(songData));
@@ -98,7 +99,7 @@ const SongList: React.FC = () => {
       <>
         {loading ? (
           <div css={listStyles}>
-            {[...Array(3)].map((_, index) => (
+            {[...Array(6)].map((_, index) => (
               <SongItemSkeleton key={index} />
             ))}
           </div>
@@ -202,10 +203,24 @@ const buttonGroupStyles = css`
 `;
 
 const listStyles = css`
-  background: white;
-  border-radius: ${theme.borderRadius.md};
-  box-shadow: ${theme.boxShadow.sm};
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${theme.spacing.lg};
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1200px) {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
 `;
 
 const emptyStateStyles = css`
